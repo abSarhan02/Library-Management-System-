@@ -3,25 +3,31 @@ public abstract class LibraryItem {
     private final String catalogueId;
     private final String title;
 
+    // Current status of the item
     private ItemStatus status;
     private String borrowerName;
 
+    // Number of times the current loan was renewed
     protected int renewalCount;
 
     private static final String LIBRARY_NAME = "Bayt Al Hekma";
 
+    // Count all items created in the system
     private static int totalItemsCatalogued = 0;
+
 
     public LibraryItem(String catalogueId, String title) {
         this.catalogueId = catalogueId;
         this.title = title;
 
+        // New items are available by default
         this.status = ItemStatus.AVAILABLE;
         this.borrowerName = null;
         this.renewalCount = 0;
 
         totalItemsCatalogued++;
     }
+
 
     public String getCatalogueId() {
         return catalogueId;
@@ -51,8 +57,10 @@ public abstract class LibraryItem {
         return totalItemsCatalogued;
     }
 
+
     public boolean lendTo(Member member) {
 
+        // Only available items can be borrowed
         if (status != ItemStatus.AVAILABLE) {
             return false;
         }
@@ -63,12 +71,15 @@ public abstract class LibraryItem {
         return true;
     }
 
+
     public final void takeBack() {
 
+        // Reset the item after a return
         status = ItemStatus.AVAILABLE;
         borrowerName = null;
         renewalCount = 0;
     }
+
 
     public void markReserved() {
 
@@ -77,9 +88,11 @@ public abstract class LibraryItem {
         }
     }
 
+
     public void markLost() {
         status = ItemStatus.LOST;
     }
+
 
     public void makeAvailable() {
 
@@ -88,15 +101,19 @@ public abstract class LibraryItem {
         renewalCount = 0;
     }
 
+
     protected void recordRenewal() {
         renewalCount++;
     }
 
+
+    // Each type of item has its own rules
     public abstract double calculateFine(int daysOverdue);
 
     public abstract int getLoanPeriod();
 
     public abstract String getCategory();
+
 
     public void display() {
 
