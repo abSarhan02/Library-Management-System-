@@ -2,7 +2,9 @@ public class Magazine extends LibraryItem implements Renewable {
 
     private final int issueNumber;
 
+    // Magazines can only be renewed once
     private static final int RENEWAL_LIMIT = 1;
+
 
     public Magazine(
             String catalogueId,
@@ -13,9 +15,11 @@ public class Magazine extends LibraryItem implements Renewable {
         this.issueNumber = issueNumber;
     }
 
+
     public int getIssueNumber() {
         return issueNumber;
     }
+
 
     @Override
     public double calculateFine(int daysOverdue) {
@@ -26,18 +30,22 @@ public class Magazine extends LibraryItem implements Renewable {
 
         double fine = daysOverdue * 3.0;
 
+        // The fine can't be higher than 30 EGP
         return Math.min(fine, 30.0);
     }
+
 
     @Override
     public int getLoanPeriod() {
         return 7;
     }
 
+
     @Override
     public String getCategory() {
         return "Magazine";
     }
+
 
     @Override
     public boolean renew() {
@@ -53,6 +61,7 @@ public class Magazine extends LibraryItem implements Renewable {
         recordRenewal();
         return true;
     }
+
 
     @Override
     public int getRenewalLimit() {
